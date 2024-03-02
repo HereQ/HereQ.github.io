@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://example.com/img/404.jpg">
 <meta property="og:image" content="http://example.com/img/404.jpg">
 <meta property="article:published_time" content="2024-02-26T14:11:02.000Z">
-<meta property="article:modified_time" content="2024-03-02T14:25:46.863Z">
+<meta property="article:modified_time" content="2024-03-02T14:38:35.781Z">
 <meta property="article:author" content="area">
 <meta property="article:tag" content="Hash">
 <meta name="twitter:card" content="summary">
@@ -70,7 +70,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"example.com","author":"area","root":"/","typed_text":["驽马十驾，功在不舍"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"log.svg","icon16":"log.svg","icon32":"log.svg","appleTouchIcon":"log.svg","webmanifest":"/site.webmanifest","visibilitychange":false,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"01/13/2024 21:00:00","prefix":"博客已萌萌哒运行 undefined 天"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-02 22:25:46"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-02 22:38:35"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -383,13 +383,13 @@
 </blockquote>
 <p>   当前的许多应用都属于<strong>数据密集型</strong>(data-intensive)，而不是计算密集型(compute-intensive)。对于数据密集型应用，cpu的处理能力不时第一限制因素，关键在于数据量、数据的复杂度及数据的快速多变性。对于大量数据或流量的处理，往往采用分布式数据系统(水平扩展)。</p>
 <p>   在分布式系统中，数据的存储和访问是很重要的问题。为了提高系统的可用性和扩展性，常常需要将数据分布到不同的节点上，并且这些节点也可能动态的加入或离开。一致性哈希算法用于分布式系统的数据分片和负载均衡算法，可以解决节点的动态变化和负载均衡问题。</p>
-<h2 id="二、一致性哈希算法"><a href="#二、一致性哈希算法" class="headerlink" title="二、一致性哈希算法"></a>二、一致性哈希算法</h2><h3 id="1、什么是哈希"><a href="#1、什么是哈希" class="headerlink" title="1、什么是哈希"></a>1、什么是哈希</h3><p>   数据结构中了解过哈希表(散列表)，可以根据键直接访问指定存储位置。把任意长度的输入通过散列算法变换为固定长度的输出(散列值)。常用的哈希算法有MD5、CRC等</p>
+<h1 id="二、一致性哈希算法"><a href="#二、一致性哈希算法" class="headerlink" title="二、一致性哈希算法"></a>二、一致性哈希算法</h1><h2 id="1、什么是哈希"><a href="#1、什么是哈希" class="headerlink" title="1、什么是哈希"></a>1、什么是哈希</h2><p>   数据结构中了解过哈希表(散列表)，可以根据键直接访问指定存储位置。把任意长度的输入通过散列算法变换为固定长度的输出(散列值)。常用的哈希算法有MD5、CRC等</p>
 <p>特点：</p>
 <pre><code>- 输入值一旦改动，输出值都会完全不同
 - 输入值不变，计算多少次输出都会完全一样
 - 过程不可逆，无法通过哈希值推导出输入值
 </code></pre>
-<h3 id="2、简单的哈希函数"><a href="#2、简单的哈希函数" class="headerlink" title="2、简单的哈希函数"></a>2、简单的哈希函数</h3><p>   场景：有三台服务器，编号n0、n1、n2，现在有10个key(假设哈希值为1,2,3,4,…,10)，希望可以将这些均匀的存到三台机器上。</p>
+<h2 id="2、简单的哈希函数"><a href="#2、简单的哈希函数" class="headerlink" title="2、简单的哈希函数"></a>2、简单的哈希函数</h2><p>   场景：有三台服务器，编号n0、n1、n2，现在有10个key(假设哈希值为1,2,3,4,…,10)，希望可以将这些均匀的存到三台机器上。</p>
 <p>$$ m &#x3D; hash(key) \pmod n $$</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">n=3时：</span><br><span class="line">n0: 3,6,9</span><br><span class="line">n1: 1,4,7,10</span><br><span class="line">n2: 2,5,8</span><br></pre></td></tr></table></figure>
 
@@ -397,9 +397,9 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">n=4时：</span><br><span class="line">n0: 4,8</span><br><span class="line">n1: 1,5,9</span><br><span class="line">n2: 2,6,10</span><br><span class="line">n3: 3,7</span><br></pre></td></tr></table></figure>
 
 <p>   只有数据1和2没用移动到新的机器，80%的key的存储位置发生了变化，此时访问key时，之前缓存的数据会失去作用；大量缓存在同一时间失效，造成缓存雪崩，进而导致整个缓存系统的不可用，这是不可接受的。</p>
-<h3 id="3、一致性哈希"><a href="#3、一致性哈希" class="headerlink" title="3、一致性哈希"></a>3、一致性哈希</h3><p>   一致性hash算法正是为了解决此类问题，<strong>它可以保证当机器增加或者减少时，节点之间的数据迁移只限于两个节点之间</strong>，不会造成全局的网络问题；</p>
+<h2 id="3、一致性哈希"><a href="#3、一致性哈希" class="headerlink" title="3、一致性哈希"></a>3、一致性哈希</h2><p>   一致性hash算法正是为了解决此类问题，<strong>它可以保证当机器增加或者减少时，节点之间的数据迁移只限于两个节点之间</strong>，不会造成全局的网络问题；</p>
 <p>   其本质也是一种取模算法，不同于上边按服务器数量取模，一致性hash是<strong>对固定值2^32取模</strong>(IPv4的地址是4组8位2进制数组成，所以用2^32可以保证每个IP地址会有唯一的映射)。</p>
-<h4 id="3-1-hash环"><a href="#3-1-hash环" class="headerlink" title="3.1 hash环"></a>3.1 hash环</h4><p>   对 2^32 进行取模运算并将 2^32 个点组成圆，圆环上的点顺时针排列，这个圆环被称为<strong>哈希环</strong>，如下图：</p>
+<h3 id="3-1-hash环"><a href="#3-1-hash环" class="headerlink" title="3.1 hash环"></a>3.1 hash环</h3><p>   对 2^32 进行取模运算并将 2^32 个点组成圆，圆环上的点顺时针排列，这个圆环被称为<strong>哈希环</strong>，如下图：</p>
 <p><img src="/../images/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/hash%E7%8E%AF.png" alt="hash环" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>   一致性哈希要进行两步哈希：</p>
 <ul>
@@ -407,10 +407,10 @@
 <li>对数据进行存储或者读取时，对数据进行哈希映射</li>
 </ul>
 <p>   即：一致性哈希将存储节点和数据都映射到了一个首尾相连的哈希环上</p>
-<h4 id="3-2-节点映射到hash环"><a href="#3-2-节点映射到hash环" class="headerlink" title="3.2 节点映射到hash环"></a>3.2 节点映射到hash环</h4><p>   对服务器进行映射时，使用 hash(服务器ip)% 2^32，即：使用服务器IP地址进行hash计算，用哈希后的结果对2^32取模，结果一定是一个0到2^32-1之间的整数；</p>
+<h3 id="3-2-节点映射到hash环"><a href="#3-2-节点映射到hash环" class="headerlink" title="3.2 节点映射到hash环"></a>3.2 节点映射到hash环</h3><p>   对服务器进行映射时，使用 hash(服务器ip)% 2^32，即：使用服务器IP地址进行hash计算，用哈希后的结果对2^32取模，结果一定是一个0到2^32-1之间的整数；</p>
 <p>   而这个整数映射在hash环上的位置代表了一个服务器，依次将node0、node1、node2三个缓存服务器映射到hash环上；</p>
 <p><img src="/../images/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/node0-2.png" alt="node0-2" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<h4 id="3-3-对象key映射到服务器"><a href="#3-3-对象key映射到服务器" class="headerlink" title="3.3 对象key映射到服务器"></a>3.3 对象key映射到服务器</h4><p>对数据进行哈希映射得到结果后，根据hash值在hash环上的位置顺时针定位距离最近的服务器 <img src="/../images/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/key-node.png" alt="key-node" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="3-3-对象key映射到服务器"><a href="#3-3-对象key映射到服务器" class="headerlink" title="3.3 对象key映射到服务器"></a>3.3 对象key映射到服务器</h3><p>对数据进行哈希映射得到结果后，根据hash值在hash环上的位置顺时针定位距离最近的服务器 <img src="/../images/%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/key-node.png" alt="key-node" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 
 </article>
     
@@ -432,7 +432,7 @@
         <a href="/2024/01/27/%E4%B8%80%E6%AC%A1%E7%A7%AF%E5%8E%8B%E5%BC%95%E8%B5%B7%E7%9A%84kafka%E7%9B%B8%E5%85%B3%E6%80%9D%E8%80%83/" class="trm-cover-frame trm-anima-link">
             
             
-                <img alt="cover" class="no-fancybox" src="/%5Cimages%5C%E4%B8%80%E6%AC%A1%E7%A7%AF%E5%8E%8B%E5%BC%95%E8%B5%B7%E7%9A%84kafka%E7%9B%B8%E5%85%B3%E6%80%9D%E8%80%83%5Ckafka.jpg">
+                <img alt="cover" class="no-fancybox" src="/../images/%E4%B8%80%E6%AC%A1%E7%A7%AF%E5%8E%8B%E5%BC%95%E8%B5%B7%E7%9A%84kafka%E7%9B%B8%E5%85%B3%E6%80%9D%E8%80%83/kafka.jpg">
             
         </a>
         
@@ -504,7 +504,7 @@
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="一、背景"><a rel="nofollow" class="trm-toc-link" href="#一、背景"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">一、背景</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="二、一致性哈希算法"><a rel="nofollow" class="trm-toc-link" href="#二、一致性哈希算法"><span class="trm-toc-number">1.1.</span> <span class="trm-toc-text">二、一致性哈希算法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="1、什么是哈希"><a rel="nofollow" class="trm-toc-link" href="#1、什么是哈希"><span class="trm-toc-number">1.1.1.</span> <span class="trm-toc-text">1、什么是哈希</span></a></li><li class="trm-toc-item trm-toc-level-3" title="2、简单的哈希函数"><a rel="nofollow" class="trm-toc-link" href="#2、简单的哈希函数"><span class="trm-toc-number">1.1.2.</span> <span class="trm-toc-text">2、简单的哈希函数</span></a></li><li class="trm-toc-item trm-toc-level-3" title="3、一致性哈希"><a rel="nofollow" class="trm-toc-link" href="#3、一致性哈希"><span class="trm-toc-number">1.1.3.</span> <span class="trm-toc-text">3、一致性哈希</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-4" title="3.1 hash环"><a rel="nofollow" class="trm-toc-link" href="#3-1-hash环"><span class="trm-toc-number">1.1.3.1.</span> <span class="trm-toc-text">3.1 hash环</span></a></li><li class="trm-toc-item trm-toc-level-4" title="3.2 节点映射到hash环"><a rel="nofollow" class="trm-toc-link" href="#3-2-节点映射到hash环"><span class="trm-toc-number">1.1.3.2.</span> <span class="trm-toc-text">3.2 节点映射到hash环</span></a></li><li class="trm-toc-item trm-toc-level-4" title="3.3 对象key映射到服务器"><a rel="nofollow" class="trm-toc-link" href="#3-3-对象key映射到服务器"><span class="trm-toc-number">1.1.3.3.</span> <span class="trm-toc-text">3.3 对象key映射到服务器</span></a></li></ol></li></ol></li></ol></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-1" title="一、背景"><a rel="nofollow" class="trm-toc-link" href="#一、背景"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">一、背景</span></a></li><li class="trm-toc-item trm-toc-level-1" title="二、一致性哈希算法"><a rel="nofollow" class="trm-toc-link" href="#二、一致性哈希算法"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">二、一致性哈希算法</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-2" title="1、什么是哈希"><a rel="nofollow" class="trm-toc-link" href="#1、什么是哈希"><span class="trm-toc-number">2.1.</span> <span class="trm-toc-text">1、什么是哈希</span></a></li><li class="trm-toc-item trm-toc-level-2" title="2、简单的哈希函数"><a rel="nofollow" class="trm-toc-link" href="#2、简单的哈希函数"><span class="trm-toc-number">2.2.</span> <span class="trm-toc-text">2、简单的哈希函数</span></a></li><li class="trm-toc-item trm-toc-level-2" title="3、一致性哈希"><a rel="nofollow" class="trm-toc-link" href="#3、一致性哈希"><span class="trm-toc-number">2.3.</span> <span class="trm-toc-text">3、一致性哈希</span></a><ol class="trm-toc-child"><li class="trm-toc-item trm-toc-level-3" title="3.1 hash环"><a rel="nofollow" class="trm-toc-link" href="#3-1-hash环"><span class="trm-toc-number">2.3.1.</span> <span class="trm-toc-text">3.1 hash环</span></a></li><li class="trm-toc-item trm-toc-level-3" title="3.2 节点映射到hash环"><a rel="nofollow" class="trm-toc-link" href="#3-2-节点映射到hash环"><span class="trm-toc-number">2.3.2.</span> <span class="trm-toc-text">3.2 节点映射到hash环</span></a></li><li class="trm-toc-item trm-toc-level-3" title="3.3 对象key映射到服务器"><a rel="nofollow" class="trm-toc-link" href="#3-3-对象key映射到服务器"><span class="trm-toc-number">2.3.3.</span> <span class="trm-toc-text">3.3 对象key映射到服务器</span></a></li></ol></li></ol></li></ol>
       </div>
     </div>
 
